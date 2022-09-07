@@ -1,12 +1,4 @@
-/*****************************************
-** File:    graph.h
-** Project: CSCE 221 Lab 7
-** Author:  Naimur S. M. Rahman & Uchenna Akahara
-** Date:    04/22/2022
-** Section: 511
-** E-mails:  naimurrah01@tamu.edu & akaharauchenna@tamu.edu
-** Description: Main logic of the Graph ADT.
-******************************************/
+
 
 #ifndef GRAPH_H
 #define GRAPH_H
