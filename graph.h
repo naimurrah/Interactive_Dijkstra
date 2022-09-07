@@ -19,12 +19,15 @@
 #include <queue>
 
 #include <vector>
+
+using std::string, std::cout, std::endl;
+
 class Graph
 {
 private:
     struct Vertex
-    {
-        size_t id;
+    {   
+        string id;
         size_t index; // spot in vertices
 
         // prim and dijkstra traversal
@@ -34,9 +37,9 @@ private:
         int previous; // index of previous vertex in vertices, -1 by default
 
         // normal constructor
-        Vertex(size_t id, size_t index, double distance, bool visited) : id(id), index(index), distance(distance), visited(visited), previous(-1) {}
+        Vertex(string id, size_t index, double distance, bool visited) : id(id), index(index), distance(distance), visited(visited), previous(-1) {}
         // constructor with default values
-        Vertex(size_t id, size_t index) : id(id), index(index)
+        Vertex(string id, size_t index) : id(id), index(index)
         {
             distance = INFINITY;
             visited = false;
@@ -63,7 +66,7 @@ private:
     // PreCondition:  Accepts a value of type size_t, id.
     // PostCondition: Retruns the index of specified vertex in the vector vertices. Returns v_count+1 if vertex is not in the vector
     //---------------------------------------------------------
-    size_t find_vertex_index(size_t id) const
+    size_t find_vertex_index(string id) const
     {
         size_t i = 0;
         for (Vertex v : vertices)
@@ -99,7 +102,7 @@ private:
     // PostCondition: Counts the number of edeges associated with the specified vertex and returns its value.
     //---------------------------------------------------------
 
-    size_t count_edge(size_t id)
+    size_t count_edge(string id)
     {
         size_t src_id = find_vertex_index(id);
         size_t num = 0;
@@ -254,7 +257,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: Return true if the graph contains a vertex with the specified identifier, false otherwise.
     //---------------------------------------------------------
-    bool contains_vertex(size_t id) const
+    bool contains_vertex(string id) const
     {
         for (Vertex v : vertices) 
         {
@@ -271,7 +274,7 @@ public:
     // PreCondition: Accepts 2 values of type size_t, the IDs of specified start and end vertices.
     // PostCondition: Return true if the graph contains an edge with the specified members (as identifiers), false otherwise.
     //---------------------------------------------------------
-    bool contains_edge(size_t src, size_t dest) const
+    bool contains_edge(string src, string dest) const
     {
         // getting indices of the ids
         size_t src_i = find_vertex_index(src);
@@ -291,7 +294,7 @@ public:
     // PreCondition: Accepts 2 values of type size_t, the IDs of specified start and end vertices.
     // PostCondition: Returns the weight of the edge between src and dest, or INFINITY if none exists.
     //---------------------------------------------------------
-    double cost(size_t src, size_t dest) const
+    double cost(string src, string dest) const
     {
         if (!contains_edge(src, dest))
         {   
@@ -310,7 +313,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: Add a vertex with the specified identifier if it does not already exist, return true on success or false otherwise.
     //---------------------------------------------------------
-    bool add_vertex(size_t id)
+    bool add_vertex(string id)
     {   
         // checking if vertex is in graph
         if (contains_vertex(id))
@@ -339,7 +342,7 @@ public:
     // PreCondition: Accepts 2 values of type size_t, the IDs of specified start and end vertices. Accepts a double, weight.
     // PostCondition: add a directed edge from src to dest with the specified weight if there is no edge from src to dest, return true on success, false otherwise.
     //---------------------------------------------------------
-    bool add_edge(size_t src, size_t dest, double weight = 1)
+    bool add_edge(string src, string dest, double weight = 1)
     {   
         // checking if edge already exists
         if (contains_edge(src, dest))
@@ -367,7 +370,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: Remove the specified vertex from the graph, including all edges of which it is a member, return true on success, false otherwise.
     //---------------------------------------------------------
-    bool remove_vertex(size_t id)
+    bool remove_vertex(string id)
     {   
         // checking if vertex is not in graph
         if (!contains_vertex(id))
@@ -406,7 +409,7 @@ public:
     // PreCondition: Accepts 2 values of type size_t, the IDs of specified start and end vertices.
     // PostCondition: remove the specified edge from the graph, but do not remove the vertices, return true on success, false otherwise.
     //---------------------------------------------------------
-    bool remove_edge(size_t src, size_t dest)
+    bool remove_edge(string src, string dest)
     {   
         // checking if edge exits in adjacency matrix
         if (!contains_edge(src, dest))
@@ -438,7 +441,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: Computes the minimum spanning tree from the specified source vertex to all other vertices in the graph using Prim’s algorithm.
     //---------------------------------------------------------
-    void prim(size_t source_id)
+    void prim(string source_id)
     {   
         // checking if source is in graph
         if (!contains_vertex(source_id))
@@ -476,7 +479,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: Assumes Prim’s has been run, returns true if there is a path from the Prim-source vertex to the specified destination vertex.
     //---------------------------------------------------------
-    bool is_path(size_t id) const
+    bool is_path(string id) const
     {
         size_t index = find_vertex_index(id);
 
@@ -508,7 +511,7 @@ public:
     // PreCondition: Accepts a value of type size_t, dest_id, the specified traversal destination, and an output stream, os.
     // PostCondition: Assumes Prim’s has been run, pretty prints the minimum spanning path from the Prim source vertex to the specified destination vertex in a “ --> “- separated list from source to destination, or prints “<no path>\n” if the vertex is unreachable.
     //---------------------------------------------------------
-    void print_path(size_t dest_id, std::ostream &os = std::cout) const
+    void print_path(string dest_id, std::ostream &os = std::cout) const
     {
         // checking if path exists
         if (!is_path(dest_id))
@@ -519,7 +522,7 @@ public:
 
         size_t dest_id_index = find_vertex_index(dest_id);
         int curr = dest_id_index;
-        std::vector<int> pathway; // holds indices that will be used to backtrack
+        std::vector<string> pathway; // holds indices that will be used to backtrack
         
         // backtracking the path
         while (curr != -1)
@@ -543,7 +546,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: destructs a graph (frees all dynamically allocated memory).
     //---------------------------------------------------------
-    void dijkstra(size_t source_id)
+    void dijkstra(string source_id)
     {   
         // checking if source is in graph
         if (!contains_vertex(source_id))
@@ -584,7 +587,7 @@ public:
     // PreCondition: Accepts a value of type size_t, i.e. the specified vertex id value.
     // PostCondition: assumes Dijkstra’s has been run, returns the cost of the shortest path from the Dijkstra-source vertex to the specified destination vertex, or INFINITY if the vertex or path does not exist.
     //---------------------------------------------------------
-    double distance(size_t id) const
+    double distance(string id) const
     {   
         // checking if vertex is in graph
         if (!contains_vertex(id))
@@ -602,7 +605,7 @@ public:
     // PreCondition: Accepts a value of type size_t, dest_id, the specified traversal destination, and an output stream, os.
     // PostCondition: Assumes Dijkstra’s has been run, pretty prints the shortest path from the Dijkstra source vertex to the specified destination vertex in a “ --> “- separated list with “ distance: #####” at the end, where <distance> is the minimum cost of a path from source to destination, or prints “<no path>\n” if the vertex is unreachable.
     //---------------------------------------------------------
-    void print_shortest_path(size_t dest_id, std::ostream &os = std::cout) const
+    void print_shortest_path(string dest_id, std::ostream &os = std::cout) const
     {   
         // if distance is infinity, that means there is no path
         if (distance(dest_id) == INFINITY)
